@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CreateUser from "./components/CreateUser";
-//import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const API = "https://acme-users-api-rev.herokuapp.com/api";
 
@@ -20,6 +20,8 @@ const fetchUser = async () => {
   storage.setItem("userId", user.id);
   return user;
 };
+
+const handleClick = {};
 export default function App() {
   const [person, setPerson] = useState({});
   useEffect(() => {

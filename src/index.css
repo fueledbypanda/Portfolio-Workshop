@@ -15,18 +15,27 @@ code {
 .container {
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
 }
 
 .container > div {
   width: 100%;
   background-color: teal;
-  height: 100px;
+  height: 200px;
 }
 button {
-  width: 50px;
-  height:20px;
-  background-color: lightgray;
   float: right;
-  margin:10px;
+  margin: 10px;
   align-items: center;
+}
+
+.email {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.5rem;
+  color: white;
+}
+
+img {
+  border-radius: 50%;
+  vertical-align: middle;
 }
