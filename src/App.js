@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CreateUser from "./components/CreateUser";
+//import 'bootstrap/dist/css/bootstrap.min.css';
+
 const API = "https://acme-users-api-rev.herokuapp.com/api";
 
 const fetchUser = async () => {
