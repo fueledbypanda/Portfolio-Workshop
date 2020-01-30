@@ -21,7 +21,11 @@ const fetchUser = async () => {
   return user;
 };
 
-const handleClick = {};
+const handleClick = (event) => {
+  axios.delete(`${API}/users/details/`)
+
+};
+
 export default function App() {
   const [person, setPerson] = useState({});
   useEffect(() => {

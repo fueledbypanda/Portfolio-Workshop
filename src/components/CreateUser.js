@@ -12,10 +12,11 @@ export default function CreateUser({ person }) {
       </div>
       <div className="email">{person.email}</div>
       <div>
-        <button className="btn btn-primary" onClick={handleClick}>
+        <button className="btn btn-primary" >
           Change User
         </button>
       </div>
     </div>
   );
 }
+// onClick={handleClick}
