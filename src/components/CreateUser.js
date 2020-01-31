@@ -1,22 +1,23 @@
 import React from "react";
 
-export default function CreateUser({ person }) {
-  console.log(person);
-  return (
-    <div className="container">
-      <div className="profilePic">
-        <img
-          alt="img"
-          src="https://s3.amazonaws.com/uifaces/faces/twitter/jonathansimmons/128.jpg"
-        />
-      </div>
-      <div className="email">{person.email}</div>
+export default function CreateUser({ person, handleNewUser }) {
+
+  const goHome=()=>{}
+
+return (
+    <div className="flex-container">
+        <div className="row">
       <div>
-        <button className="btn btn-primary" >
-          Change User
-        </button>
+        <img alt="img" onClick={goHome} src={person.avatar} />
+      </div>
+      <div>Welcome {person.email}</div>
+      <div>
+        <button onClick={handleNewUser} className="btn btn-info">Change User</button>
+      </div>
       </div>
     </div>
   );
-}
-// onClick={handleClick}
+
+  }
+
+

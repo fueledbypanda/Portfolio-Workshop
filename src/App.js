@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CreateUser from "./components/CreateUser";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Home from './components/Home';
+
 
 const API = "https://acme-users-api-rev.herokuapp.com/api";
 
@@ -21,19 +23,31 @@ const fetchUser = async () => {
   return user;
 };
 
-const handleClick = (event) => {
-  axios.delete(`${API}/users/details/`)
 
-};
 
 export default function App() {
-  const [person, setPerson] = useState({});
+  const [user, setUser] = useState({});
   useEffect(() => {
-    fetchUser().then(data => setPerson(data));
+    fetchUser().then(data => setUser(data));
   }, []);
+
+  const handleNewUser = () => {
+    window.localStorage.removeItem('userId');
+    fetchUser()
+      .then(user => {
+        setUser(user);
+        console.log(user);
+        return user;
+
+      })
+
+    }
+
+
   return (
     <div>
-      <CreateUser person={person} />
+      <CreateUser person={user} handleNewUser= {handleNewUser} />
+      <Home />
     </div>
   );
 }
