@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CreateUser from "./components/CreateUser";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Home from './components/Home';
-
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Home from "./components/Home";
 
 const API = "https://acme-users-api-rev.herokuapp.com/api";
 
@@ -23,8 +23,6 @@ const fetchUser = async () => {
   return user;
 };
 
-
-
 export default function App() {
   const [user, setUser] = useState({});
   useEffect(() => {
@@ -32,21 +30,17 @@ export default function App() {
   }, []);
 
   const handleNewUser = () => {
-    window.localStorage.removeItem('userId');
-    fetchUser()
-      .then(user => {
-        setUser(user);
-        console.log(user);
-        return user;
-
-      })
-
-    }
-
+    window.localStorage.removeItem("userId");
+    fetchUser().then(user => {
+      setUser(user);
+      console.log(user);
+      return user;
+    });
+  };
 
   return (
     <div>
-      <CreateUser person={user} handleNewUser= {handleNewUser} />
+      <CreateUser person={user} handleNewUser={handleNewUser} />
       <Home />
     </div>
   );

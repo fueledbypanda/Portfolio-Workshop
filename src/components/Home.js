@@ -1,27 +1,50 @@
-import React from 'react';
-
+import React from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Notes from "./Notes";
+import Vacations from "./Vacations";
+import Companies from "./Companies";
 export default function Home() {
   return (
-    <div className="container">
-      <h1>Home</h1>
-      <div className="circle-container">
+    <Router>
+      <div className="container">
+        <Link to="/">
+          <h1>Home</h1>
+        </Link>
+        <div className="circle-container">
+          <div className="circle">
+            <p>
+              <Link to="/notes">
+                <strong>Notes</strong>
+              </Link>
+              <br />
+              You have {} notes.
+            </p>
+          </div>
+          <div className="circle">
+            <p>
+              <Link to="/vacations">
+                <strong>Vacations</strong>
+              </Link>
+              <br />
+              You have {} vacations.
+            </p>
+          </div>
 
-      <div className="circle">
-        <p><strong>Notes</strong><br />
-          You have {} notes.</p>
+          <div className="circle">
+            <p>
+              <Link to="/companies">
+                <strong>Following Companies</strong>
+              </Link>
+              <br />
+              You are following {} companies
+            </p>
+          </div>
         </div>
-      <div className="circle">
-        <p><strong>Vacations</strong><br />
-          You have {} vacations.</p>
-        </div>
-
-        <div className="circle">
-        <p><strong>Following Companies</strong><br />
-          You are following {} companies</p>
-        </div>
-
-
+        <Route exact path="/" components={Home} />
+        <Route path="/notes" components={Notes} />
+        <Route path="/vacations" components={Vacations} />
+        <Route path="/companies" components={Companies} />
       </div>
-</div>
-  )
+    </Router>
+  );
 }
