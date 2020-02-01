@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import CreateUser from "./components/CreateUser";
+import qs from 'qs';
 import "bootstrap/dist/css/bootstrap.min.css";
-import Home from './components/Home';
 
+import CreateUser from "./components/CreateUser";
+import Home from './components/Home';
+import Notes from './components/Notes';
+import Vacations from './components/Vacations';
+import Companies from './components/Companies';
 
 const API = "https://acme-users-api-rev.herokuapp.com/api";
 
@@ -23,31 +27,97 @@ const fetchUser = async () => {
   return user;
 };
 
-
-
 export default function App() {
-  const [user, setUser] = useState({});
+
+  const getHash = () => {
+    return window.location.hash.slice(1);
+  }
+  const [params, setParams] = useState(qs.parse(getHash()));
+
   useEffect(() => {
-    fetchUser().then(data => setUser(data));
+    window.addEventListener('hashchange', () => {
+      setParams(qs.parse(getHash()));
+    });
+    setParams(qs.parse(getHash()));
   }, []);
+
+
+  const [user, setUser] = useState({});
+  const [notes, setNotes] = useState([]);
+  const [vacations, setVacations] = useState([]);
+  const [companies, setCompanies] = useState([]);
+
+
+  useEffect(() => {
+    fetchUser().then(data => {
+      setUser(data);
+      return user;
+    })
+      .then(user => {
+        axios
+          .get(`${API}/users/${user.id}/notes`)
+          .then(response => setNotes(response.data));
+        return user;
+      })
+      .then(user => {
+        axios
+          .get(`${API}/users/${user.id}/vacations`)
+          .then(response => setVacations(response.data));
+        return user;
+      })
+      .then(user => {
+        axios
+          .get(`${API}/users/${user.id}/followingCompanies`)
+          .then(response => setCompanies(response.data));
+      })
+  }, [user]);
+
 
   const handleNewUser = () => {
     window.localStorage.removeItem('userId');
     fetchUser()
       .then(user => {
         setUser(user);
-        console.log(user);
         return user;
-
       })
-
-    }
+      .then(user => {
+        axios
+          .get(`${API}/users/${user.id}/notes`)
+          .then(response => setNotes(response.data));
+        return user;
+      })
+      .then(user => {
+        axios
+          .get(`${API}/users/${user.id}/vacations`)
+          .then(response => setVacations(response.data));
+        return user;
+      })
+      .then(user => {
+        axios
+          .get(`${API}/users/${user.id}/followingCompanies`)
+          .then(response => setCompanies(response.data));
+      });
+  }
 
 
   return (
     <div>
-      <CreateUser person={user} handleNewUser= {handleNewUser} />
-      <Home />
+      <CreateUser person={user} handleNewUser={handleNewUser} notes={notes}
+      />
+      {
+        params.view === undefined ?
+          <Home
+            person={user}
+            notes={notes}
+            vacations={vacations}
+            companies={companies}
+          /> : null
+      }
+
+      {params.view === 'notes' ? <Notes notes={notes} /> : null}
+      {params.view === 'vacations' ? <Vacations vacations={vacations} /> : null}
+      {params.view === 'companies' ? <Companies companies={companies} /> : null}
+
     </div>
   );
 }
