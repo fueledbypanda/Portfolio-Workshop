@@ -27,10 +27,10 @@ const fetchUser = async () => {
   return user;
 };
 
+const getHash = () => {
+  return window.location.hash.slice(1);
+};
 export default function App() {
-  const getHash = () => {
-    return window.location.hash.slice(1);
-  };
   const [params, setParams] = useState(qs.parse(getHash()));
 
   useEffect(() => {
@@ -67,7 +67,8 @@ export default function App() {
         axios
           .get(`${API}/users/${user.id}/followingCompanies`)
           .then(response => setCompanies(response.data));
-      });
+      })
+      .catch(error => console.log('Terri', error))
   }, [user]);
 
   const handleNewUser = () => {
@@ -93,24 +94,36 @@ export default function App() {
         axios
           .get(`${API}/users/${user.id}/followingCompanies`)
           .then(response => setCompanies(response.data));
+        return user
       });
   };
 
-  const createUserVacation = user => async vacation => {
+  const createUserVacation = user => vacation => {
     axios
       .post(`${API}/users/${user.id}/vacations`, {
         startDate: vacation.startDate,
         endDate: vacation.endDate
       })
-      .then(function(response) {
+      .then(function (response) {
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
-  };
 
-  console.log(user);
+  };
+  const deleteVacay = (vacationId) => {
+    // event.preventDefault();
+
+    axios.delete(`${API}/users/${user.id}/vacations/${vacationId}`)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+  }
+
+
+
 
   return (
     <div>
@@ -130,6 +143,7 @@ export default function App() {
           vacations={vacations}
           users={user}
           onVacationCreated={createUserVacation(user)}
+          deleteVacay={deleteVacay}
         />
       ) : null}
       {params.view === "companies" ? <Companies companies={companies} /> : null}
